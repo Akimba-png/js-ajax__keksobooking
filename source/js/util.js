@@ -32,4 +32,17 @@ export const getRandomArray = (array) => {
   return shuffleArray(array).slice(0, getRandomInteger(1, array.length));
 };
 
+export const getRoomPostfix = (roomNumber) => {
+  return roomNumber === 1 ? 'комната' : roomNumber > 4 ? 'комнат' : 'комнаты';
+};
 
+export const getGuestPostfix = (guestNumber) => {
+  return guestNumber === 1 ? 'гостя' : 'гостей';
+};
+
+export const housingType = {
+  palace: 'Дворец',
+  flat: 'Квартира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+};

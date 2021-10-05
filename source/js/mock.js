@@ -13,7 +13,7 @@ import {
 } from './util';
 
 
-const createRentalAdData = () => {
+const createMockAdData = () => {
   const longitude = getRandomDecimal(35.65000, 35.70000);
   const latitude = getRandomDecimal(139.70000, 139.80000);
   return {
@@ -40,5 +40,5 @@ const createRentalAdData = () => {
   };
 };
 
-export const rentalAdData = new Array(10)
-  .fill(null).map(() => createRentalAdData());
+export const mockAdsData = new Array(10)
+  .fill(null).map(() => createMockAdData());

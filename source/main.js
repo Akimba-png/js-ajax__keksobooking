@@ -1,3 +1,4 @@
-import { rentalAdData } from './js/mock';
+import { mockAdsData } from './js/mock';
+import './js/template';
 
-console.log(rentalAdData);
+console.log(mockAdsData);
