@@ -8,7 +8,7 @@ const containerElement = document.querySelector('.map__canvas');
 const renderAvailableFeatures = (adTemplate, features) => {
   const featuresList = adTemplate.querySelector('.popup__features');
   Array.from(featuresList.children)
-   .forEach((featuresItem) => featuresList.removeChild(featuresItem));
+    .forEach((featuresItem) => featuresList.removeChild(featuresItem));
   const featuresListFragment = document.createDocumentFragment();
   features.forEach((feature) => {
     const featuresElement = document.createElement('li');
@@ -41,13 +41,13 @@ const createAdsTemplate = (adsData) => {
     adTemplate.querySelector('.popup__text--address').textContent = adData.offer.address;
     adTemplate.querySelector('.popup__text--price').textContent = `${adData.offer.price} ₽/ночь`;
     adTemplate.querySelector('.popup__type').textContent = housingType[adData.offer.type];
-    adTemplate.querySelector('.popup__text--capacity').textContent = `${adData.offer.rooms} ${getRoomPostfix(adData.offer.rooms)} для ${adData.offer.guests} ${getGuestPostfix(adData.offer.guests)}`
+    adTemplate.querySelector('.popup__text--capacity').textContent = `${adData.offer.rooms} ${getRoomPostfix(adData.offer.rooms)} для ${adData.offer.guests} ${getGuestPostfix(adData.offer.guests)}`;
     adTemplate.querySelector('.popup__text--time').textContent = `Заезд после ${adData.offer.checkin}, выезд до ${adData.offer.checkout}`;
     renderAvailableFeatures(adTemplate, adData.offer.features);
     adTemplate.querySelector('.popup__description').textContent = adData.offer.description;
     renderPhotos(adTemplate, adData.offer.photos);
     fragmentElement.appendChild(adTemplate);
-  })
+  });
   containerElement.appendChild(fragmentElement);
 };
 

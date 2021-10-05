@@ -24,21 +24,25 @@ export const getRandomDecimal = (a, b, fraction = 5) => {
   return (Math.random() * (max - min) + min).toFixed(fraction);
 };
 
-export const getRandomArrayElement = (array) => {
-  return array[getRandomInteger(0, array.length - 1)];
-};
+export const getRandomArrayElement = (array) =>
+  array[getRandomInteger(0, array.length - 1)];
 
-export const getRandomArray = (array) => {
-  return shuffleArray(array).slice(0, getRandomInteger(1, array.length));
-};
+export const getRandomArray = (array) =>
+  shuffleArray(array).slice(0, getRandomInteger(1, array.length));
 
 export const getRoomPostfix = (roomNumber) => {
-  return roomNumber === 1 ? 'комната' : roomNumber > 4 ? 'комнат' : 'комнаты';
+  switch (true) {
+    case roomNumber === 1:
+      return 'комната';
+    case roomNumber > 4:
+      return 'комнат';
+    default:
+      return 'комнаты';
+  }
 };
 
-export const getGuestPostfix = (guestNumber) => {
-  return guestNumber === 1 ? 'гостя' : 'гостей';
-};
+export const getGuestPostfix = (guestNumber) =>
+  guestNumber === 1 ? 'гостя' : 'гостей';
 
 export const housingType = {
   palace: 'Дворец',

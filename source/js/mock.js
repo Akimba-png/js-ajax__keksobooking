@@ -2,14 +2,14 @@ import {
   HOUSING_TYPES,
   REGISTRATION_INTERVALS,
   FEATURES,
-  PHOTOS,
+  PHOTOS
 } from './const';
 
 import {
   getRandomInteger,
   getRandomArrayElement,
   getRandomArray,
-  getRandomDecimal,
+  getRandomDecimal
 } from './util';
 
 
