@@ -2,6 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: './source/main.js',
+  devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
@@ -13,5 +14,13 @@ module.exports = {
       watch: true,
     },
     port: 9000,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
   },
 }
