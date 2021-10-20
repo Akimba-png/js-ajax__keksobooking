@@ -1,51 +1,72 @@
 import L from 'leaflet';
 import './../../node_modules/leaflet/dist/leaflet.css';
+import { createAdTemplate } from './template';
 import { mockAdsData } from './mock';
 
-const tokyoCenterCoord = {
+const ZOOM_LEVEL = 9;
+const COORDINATE_ACCURACY = 5;
+const ANCHOR_SIZE_MULTIPLIER = 2;
+const cityCenterCoord = {
   lat: 35.681700,
   lng: 139.753891,
 };
 
+const IconSize = {
+  MAIN_VALUES: [40, 40],
+  RENT_VALUES: [24, 24],
+};
 
 const mapFilterElement = document.querySelector('.map__filters');
 const adFormElement = document.querySelector('.ad-form');
 const addressInputElement = adFormElement.querySelector('#address');
 
-const togglePageStatus = () => {
+
+const getIconsAnchorCoordinates = (iconSizes) => {
+  const [coordinateX, coordinateY] = iconSizes;
+  return [coordinateX / ANCHOR_SIZE_MULTIPLIER, coordinateY];
+};
+
+const toggleFilterStatus = () => {
   mapFilterElement.classList.toggle('ad-form--disabled');
   Array.from(mapFilterElement.children)
     .forEach((element) => element.disabled = element.disabled === false);
+};
+
+const toggleFormStatus = () => {
   adFormElement.classList.toggle('ad-form--disabled');
   Array.from(adFormElement.children)
     .forEach((element) => element.disabled = element.disabled === false);
 };
 
-togglePageStatus.apply();
+toggleFormStatus();
+toggleFilterStatus();
+
 
 const renderLatLng = (coordinate) => {
   const {lat, lng} = coordinate;
-  addressInputElement.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`
-}
+  addressInputElement.value = `${(lat).toFixed(COORDINATE_ACCURACY)},
+  ${lng.toFixed(COORDINATE_ACCURACY)}`;
+};
 
 const map = L.map('map-canvas')
   .on('load', () => {
-    togglePageStatus();
-    renderLatLng(tokyoCenterCoord);
+    toggleFormStatus();
+    toggleFilterStatus();
+    renderLatLng(cityCenterCoord);
   })
-  .setView([35.681700, 139.753891], 9);
+  .setView(Object.values(cityCenterCoord), ZOOM_LEVEL);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 }).addTo(map);
 
 const mainIcon = L.icon({
   iconUrl: './../img/map-icons/main-pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
+  iconSize: IconSize.MAIN_VALUES,
+  iconAnchor: getIconsAnchorCoordinates(IconSize.MAIN_VALUES),
 });
 
-const mainMarker = L.marker([35.681700, 139.753891],
+const mainMarker = L.marker(Object.values(cityCenterCoord),
   {
     icon: mainIcon,
     draggable: true,
@@ -59,13 +80,14 @@ mainMarker.on('moveend', (ev) => {
 
 const rentIcon = L.icon({
   iconUrl: './../img/map-icons/pin.svg',
-  iconSize: [24, 24],
-  iconAnchor: [12, 24],
+  iconSize: IconSize.RENT_VALUES,
+  iconAnchor: getIconsAnchorCoordinates(IconSize.RENT_VALUES),
 });
 
-mockAdsData.forEach(({offer}) => {
+mockAdsData.forEach((adData) => {
+  const { offer } = adData;
   L.marker([offer.location.x, offer.location.y],
     {
       icon: rentIcon,
-    }).addTo(map);
+    }).bindPopup(createAdTemplate(adData)).addTo(map);
 });
