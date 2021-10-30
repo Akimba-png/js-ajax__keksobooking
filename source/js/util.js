@@ -1,3 +1,5 @@
+import { DISABLED_CLASS } from './const';
+
 const shuffleArray = (array) => {
   const shuffledArray = array.slice();
   let j;
@@ -49,4 +51,32 @@ export const housingType = {
   flat: 'Квартира',
   house: 'Дом',
   bungalow: 'Бунгало',
+};
+
+export const adaptAdToClient = (ad) => {
+  const adaptedAd = Object.assign(
+    {},
+    ad,
+    {
+      offer: Object.assign(
+        {},
+        ad.offer,
+        {
+          location:
+          {
+            x: ad.location.lat,
+            y: ad.location.lng,
+          },
+        },
+      ),
+    },
+  );
+  delete adaptedAd.location;
+  return adaptedAd;
+};
+
+export const toggleFormStatus = (formElement) => {
+  formElement.classList.toggle(DISABLED_CLASS);
+  Array.from(formElement.children)
+    .forEach((element) => element.disabled = element.disabled === false);
 };
