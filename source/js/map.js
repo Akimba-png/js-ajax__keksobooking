@@ -3,18 +3,17 @@ import './../../node_modules/leaflet/dist/leaflet.css';
 import { getData } from './api';
 import { createAdTemplate } from './template';
 import { toggleFormStatus } from './util';
-
 import { showErrorMessage } from './error-message';
-
 import {
   mapFilterElement,
   applyFilter,
-  setFilterInputClick
+  setFilterInputClick,
+  resetFilters
 } from './filter';
-
 import {
   adFormElement,
-  showAddress
+  showAddress,
+  setResetButtonClick
 } from './form';
 
 
@@ -85,6 +84,12 @@ const renderAds = (ads) => {
   rentIconsLayerGroup.addTo(map);
 };
 
+const resetMap = (ads) => {
+  mainMarker.setLatLng(cityCenterCoord);
+  showAddress(cityCenterCoord);
+  renderAds(ads);
+};
+
 map.on('load', () => {
   toggleFormStatus(adFormElement);
   showAddress(cityCenterCoord);
@@ -93,6 +98,7 @@ map.on('load', () => {
       renderAds(ads);
       toggleFormStatus(mapFilterElement);
       setFilterInputClick(ads, rentIconsLayerGroup, renderAds);
+      setResetButtonClick(resetFilters, () => resetMap(ads));
     },
     showErrorMessage,
   );
