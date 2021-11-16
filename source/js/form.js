@@ -1,6 +1,6 @@
-import { COORDINATE_ACCURACY, Index } from './const';
+import { COORDINATE_ACCURACY, RADIX, Index } from './const';
+import { sendData } from './api';
 
-const RADIX = 10;
 const UNINHABITED_CAPACITY = 100;
 const PROPERTY_MAX_PRICE = 1000000;
 
@@ -55,6 +55,11 @@ const onHousingTypeInputChange = (evt) => {
 };
 housingTypeInputElement.addEventListener('change', onHousingTypeInputChange);
 
+const resetPriceInputValue = () => {
+  priceInputElement.min = propertyMinPrice.flat;
+  priceInputElement.placeholder = propertyMinPrice.flat;
+};
+
 const onPriceInputChange = (evt) => {
   const { target } = evt;
   const priceValue = parseInt(target.value, RADIX);
@@ -103,12 +108,27 @@ const resetGuestDisabledStatus = () => {
   });
 };
 
-export const setResetButtonClick = (onFilterReset, onMapReset) => {
+const resetForm = () => {
+  adFormElement.reset();
+  resetGuestDisabledStatus();
+  resetPriceInputValue();
+};
+
+export const setResetButtonClick = (onMapReset) => {
   resetButtonElement.addEventListener('click', (evt) => {
     evt.preventDefault();
-    adFormElement.reset();
-    resetGuestDisabledStatus();
-    onFilterReset();
+    resetForm();
     onMapReset();
+  });
+};
+
+export const setFormSubmit = (onSuccess, onFail) => {
+  adFormElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    sendData(() => {
+      resetForm();
+      onSuccess();
+    }, onFail, formData);
   });
 };

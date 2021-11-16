@@ -2,6 +2,7 @@ export const HOUSING_TYPES = ['palace', 'flat', 'house', 'bungalow'];
 export const REGISTRATION_INTERVALS = ['12:00', '13:00', '14:00'];
 export const DISABLED_CLASS = 'ad-form--disabled';
 export const COORDINATE_ACCURACY = 5;
+export const RADIX = 10;
 
 export const FEATURES = [
   'wifi',

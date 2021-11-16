@@ -54,12 +54,11 @@ export const applyFilter = (ad) =>
   && getCheckboxStatus(elevatorOptionElement, ad.offer.features)
   && getCheckboxStatus(conditionerOptionElement, ad.offer.features);
 
-export const setFilterInputClick = (ads, mapIconsLayer, onFilterChange) => {
+export const setFilterInputClick = (onFilterChange) => {
   mapFilterElement.addEventListener('change', (evt) => {
     if (evt.target.matches('.map__filter') ||
     evt.target.matches('.map__checkbox')) {
-      mapIconsLayer.clearLayers();
-      onFilterChange(ads);
+      onFilterChange();
     }
   });
 };

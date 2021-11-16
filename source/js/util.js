@@ -1,10 +1,11 @@
-import { DISABLED_CLASS } from './const';
+import { DISABLED_CLASS, COORDINATE_ACCURACY, RADIX } from './const';
+
+const PLURAL_ENDING_NUMBER = 4;
 
 const shuffleArray = (array) => {
   const shuffledArray = array.slice();
   let j;
   let temp;
-
   for (let i = shuffledArray.length - 1; i > 0; i--) {
     j = Math.floor(Math.random() * (i + 1));
     temp = shuffledArray[j];
@@ -20,7 +21,7 @@ export const getRandomInteger = (a, b) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-export const getRandomDecimal = (a, b, fraction = 5) => {
+export const getRandomDecimal = (a, b, fraction = COORDINATE_ACCURACY) => {
   const min = Math.ceil(Math.min(a, b));
   const max = Math.floor(Math.max(a, b));
   return (Math.random() * (max - min) + min).toFixed(fraction);
@@ -36,7 +37,7 @@ export const getRoomPostfix = (roomNumber) => {
   switch (true) {
     case roomNumber === 1:
       return 'комната';
-    case roomNumber > 4:
+    case roomNumber > PLURAL_ENDING_NUMBER:
       return 'комнат';
     default:
       return 'комнаты';
@@ -73,6 +74,37 @@ export const adaptAdToClient = (ad) => {
   );
   delete adaptedAd.location;
   return adaptedAd;
+};
+
+const checkAvailableFeatures = (features) => {
+  if (!features) {
+    return [];
+  }
+  return typeof features === 'object' ? features : [features];
+};
+
+export const adaptPostedAdToClient = (ad) => {
+  const adaptedAd = {
+    author: ad.author || '',
+    offer: {
+      address: ad.address || '',
+      checkin: ad.timein || '',
+      checkout: ad.timeout || '',
+      description: ad.description || '',
+      features: checkAvailableFeatures(ad.features),
+      guests: ad.capacity || 1,
+      location: {
+        x: parseFloat(ad.address.split(',  ')[0]),
+        y: parseFloat(ad.address.split(',  ')[1]),
+      },
+      photos: ad.files || [],
+      price: parseInt(ad.price, RADIX),
+      rooms: ad.rooms || '',
+      title: ad.title || '',
+      type: ad.type || '',
+    },
+  };
+  return [adaptedAd];
 };
 
 export const toggleFormStatus = (formElement) => {

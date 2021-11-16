@@ -3,7 +3,8 @@ import './../../node_modules/leaflet/dist/leaflet.css';
 import { getData } from './api';
 import { createAdTemplate } from './template';
 import { toggleFormStatus } from './util';
-import { showErrorMessage } from './error-message';
+import { showErrorMessage } from './status-message';
+import { storage } from './storage';
 import {
   mapFilterElement,
   applyFilter,
@@ -12,14 +13,13 @@ import {
 } from './filter';
 import {
   adFormElement,
-  showAddress,
-  setResetButtonClick
+  showAddress
 } from './form';
 
 
 const ZOOM_LEVEL = 9;
 const ANCHOR_SIZE_MULTIPLIER = 2;
-const MAX_RENT_ICONS_AMOUNT = 10;
+const MAX_RENT_ICONS_AMOUNT = 20;
 
 const IconSize = {
   MAIN_VALUES: [40, 40],
@@ -69,8 +69,9 @@ const rentIcon = L.icon({
 });
 
 const rentIconsLayerGroup = L.layerGroup();
-const renderAds = (ads) => {
-  ads
+const renderAds = () => {
+  rentIconsLayerGroup.clearLayers();
+  storage.getAds()
     .slice()
     .filter(applyFilter)
     .slice(0, MAX_RENT_ICONS_AMOUNT)
@@ -83,11 +84,13 @@ const renderAds = (ads) => {
     });
   rentIconsLayerGroup.addTo(map);
 };
+storage.addObserver(renderAds);
 
-const resetMap = (ads) => {
+export const resetMap = () => {
   mainMarker.setLatLng(cityCenterCoord);
   showAddress(cityCenterCoord);
-  renderAds(ads);
+  resetFilters();
+  renderAds();
 };
 
 map.on('load', () => {
@@ -95,10 +98,9 @@ map.on('load', () => {
   showAddress(cityCenterCoord);
   getData(
     (ads) => {
-      renderAds(ads);
+      storage.setAd(ads);
       toggleFormStatus(mapFilterElement);
-      setFilterInputClick(ads, rentIconsLayerGroup, renderAds);
-      setResetButtonClick(resetFilters, () => resetMap(ads));
+      setFilterInputClick(renderAds);
     },
     showErrorMessage,
   );
