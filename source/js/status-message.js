@@ -10,7 +10,7 @@ errorElement.style.zIndex = '1';
 errorElement.style.transform = 'translateX(-50%)';
 errorElement.style.color = 'red';
 errorElement.style.whiteSpace = 'nowrap';
-errorElement.textContent = DOWNLOAD_ERROR_TEXT;
+// errorElement.textContent = DOWNLOAD_ERROR_TEXT;
 
 const successTemplateElement = document
   .querySelector('#success').content
@@ -32,7 +32,8 @@ const clearNotification = (notificationElement, renderTime) => {
   );
 };
 
-export const showErrorMessage = () => {
+export const showErrorMessage = (messageText = DOWNLOAD_ERROR_TEXT) => {
+  errorElement.textContent = messageText;
   document.body.appendChild(errorElement);
   clearNotification(errorElement, DISPLAY_TIME);
 };

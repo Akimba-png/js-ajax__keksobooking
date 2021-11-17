@@ -102,7 +102,7 @@ map.on('load', () => {
       toggleFormStatus(mapFilterElement);
       setFilterInputClick(debounce(renderAds));
     },
-    showErrorMessage,
+    () => showErrorMessage(),
   );
 }).setView(Object.values(cityCenterCoord), ZOOM_LEVEL);
 
