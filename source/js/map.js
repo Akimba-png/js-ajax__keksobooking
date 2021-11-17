@@ -2,7 +2,7 @@ import L from 'leaflet';
 import './../../node_modules/leaflet/dist/leaflet.css';
 import { getData } from './api';
 import { createAdTemplate } from './template';
-import { toggleFormStatus } from './util';
+import { toggleFormStatus, debounce } from './util';
 import { showErrorMessage } from './status-message';
 import { storage } from './storage';
 import {
@@ -100,7 +100,7 @@ map.on('load', () => {
     (ads) => {
       storage.setAd(ads);
       toggleFormStatus(mapFilterElement);
-      setFilterInputClick(renderAds);
+      setFilterInputClick(debounce(renderAds));
     },
     showErrorMessage,
   );

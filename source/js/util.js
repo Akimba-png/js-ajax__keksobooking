@@ -1,6 +1,7 @@
 import { DISABLED_CLASS, COORDINATE_ACCURACY, RADIX } from './const';
 
 const PLURAL_ENDING_NUMBER = 4;
+const DEBOUNCE_DELAY = 500;
 
 const shuffleArray = (array) => {
   const shuffledArray = array.slice();
@@ -111,4 +112,12 @@ export const toggleFormStatus = (formElement) => {
   formElement.classList.toggle(DISABLED_CLASS);
   Array.from(formElement.children)
     .forEach((element) => element.disabled = element.disabled === false);
+};
+
+export const debounce = (cb) => {
+  let intervalId;
+  return () => {
+    clearTimeout(intervalId);
+    intervalId = setTimeout(cb, DEBOUNCE_DELAY);
+  };
 };
