@@ -1,7 +1,7 @@
 {
   "name": "keksobooking",
   "version": "1.0.0",
-  "description": "Тренировочный проект от Html Academy",
+  "description": "Функциональное программирование. ES6+",
   "main": "index.js",
   "private": false,
   "scripts": {
